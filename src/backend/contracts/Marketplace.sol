@@ -79,7 +79,7 @@ contract Marketplace is ReentrancyGuard {
         require(!item.sold, "item already sold");
         // pay seller and feeAccount
         item.seller.transfer(item.price);
-        feeAccount.transfer(_totalPrice - itemprice);
+        feeAccount.transfer(_totalPrice - item.price);
         // update item to sold
         item.sold = true;
         // transfer nft to buyer
@@ -98,5 +98,5 @@ contract Marketplace is ReentrancyGuard {
     function getTotalPrice(uint _itemId) view public returns(uint) {
         return(items[_itemId].price*(100 + feePercent)/100);
     }
-    
+
 }
