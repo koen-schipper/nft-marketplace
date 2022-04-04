@@ -26,17 +26,21 @@ function App() {
     // Store connected account to state
     setAccount(accounts[0]);
     // Get provider from Metamask
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const provider = new ethers.providers.AlchemyProvider("rinkeby", "MQmFfJnpqKfvKV8zBWAZKBVf0QKTCOW0");
     // Set signer
-    const signer = provider.getSigner();
+    // let privateKey = "052d8c6d1a295e5ec054e739c564de1600f3a1910482305fbe8907abaa3d58a8";
+    // let wallet = new ethers.Wallet(privateKey);
+    // const signer = "052d8c6d1a295e5ec054e739c564de1600f3a1910482305fbe8907abaa3d58a8";
+    const wallet = new ethers.Wallet("052d8c6d1a295e5ec054e739c564de1600f3a1910482305fbe8907abaa3d58a8", provider);
+    const walletSigner = wallet.connect(provider);
 
-    loadContracts(signer)
+    loadContracts(walletSigner)
   }
-  const loadContracts = async (signer) => {
+  const loadContracts = async (walletSigner) => {
     // Get deployed copies of contracts
-    const marketplace = new ethers.Contract(MarketplaceAddress.address, MarketplaceAbi.abi, signer);
+    const marketplace = new ethers.Contract(MarketplaceAddress.address, MarketplaceAbi.abi, walletSigner);
     setMarketplace(marketplace);
-    const nft = new ethers.Contract(NFTAddress.address, NFTAbi.abi, signer);
+    const nft = new ethers.Contract(NFTAddress.address, NFTAbi.abi, walletSigner);
     setNFT(nft);
     setLoading(false);
   }
